@@ -10,11 +10,17 @@ class ProductController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
-    isLoading.value = true;
-    var products = await APIService.fetchProducts();
-    if (products != null) {
-      productsList.value = products;
+
+    try {
+      isLoading.value = true;
+      var products = await APIService.fetchProducts();
+      if (products != null) {
+        productsList.value = products;
+      }
+      isLoading.value = false;
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 }
